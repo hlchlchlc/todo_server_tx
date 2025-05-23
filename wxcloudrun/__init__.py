@@ -11,6 +11,31 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__, instance_relative_config=True)
 app.config['DEBUG'] = config.DEBUG
 
+# 尝试创建数据库
+def create_database_if_not_exists():
+    try:
+        # 不指定数据库名称，连接到MySQL服务器
+        conn = pymysql.connect(
+            host=config.db_address.split(':')[0],
+            port=int(config.db_address.split(':')[1]),
+            user=config.username,
+            password=config.password
+        )
+        cursor = conn.cursor()
+        
+        # 创建数据库
+        cursor.execute("CREATE DATABASE IF NOT EXISTS todo_app")
+        
+        # 关闭连接
+        cursor.close()
+        conn.close()
+        print("数据库检查/创建成功")
+    except Exception as e:
+        print(f"创建数据库时出错: {e}")
+
+# 创建数据库
+create_database_if_not_exists()
+
 # 设定数据库链接
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/todo_app'.format(
     config.username, config.password, config.db_address
