@@ -7,3 +7,6 @@ DEBUG = True
 username = os.environ.get("MYSQL_USERNAME", 'root')
 password = os.environ.get("MYSQL_PASSWORD", 'root')
 db_address = os.environ.get("MYSQL_ADDRESS", '127.0.0.1:3306')
+
+# JWT密钥
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", 'dev-secret-key-change-in-production')
